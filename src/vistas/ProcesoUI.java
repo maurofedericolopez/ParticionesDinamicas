@@ -1,9 +1,13 @@
 package vistas;
 
 import controladores.Controlador;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -30,9 +34,11 @@ public class ProcesoUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        selectorArchivo = new javax.swing.JFileChooser();
         titulo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         botonSiguiente = new javax.swing.JButton();
+        botonAbrirArchivoProcesos = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         botonNuevoProceso = new javax.swing.JButton();
         etiquetaNombre = new javax.swing.JLabel();
@@ -49,6 +55,12 @@ public class ProcesoUI extends javax.swing.JPanel {
         botonEliminarProceso = new javax.swing.JButton();
         jsp = new javax.swing.JScrollPane();
         tablaProcesos = new javax.swing.JTable();
+
+        selectorArchivo.setDialogTitle("Abrir");
+        selectorArchivo.setFileFilter(new FileNameExtensionFilter(".txt","txt"));
+        selectorArchivo.setMaximumSize(new java.awt.Dimension(600, 300));
+        selectorArchivo.setMinimumSize(new java.awt.Dimension(600, 300));
+        selectorArchivo.setPreferredSize(new java.awt.Dimension(600, 300));
 
         setMaximumSize(new java.awt.Dimension(550, 300));
         setMinimumSize(new java.awt.Dimension(550, 300));
@@ -71,19 +83,30 @@ public class ProcesoUI extends javax.swing.JPanel {
             }
         });
 
+        botonAbrirArchivoProcesos.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        botonAbrirArchivoProcesos.setText("Abrir Archivo de Procesos");
+        botonAbrirArchivoProcesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAbrirArchivoProcesosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 387, Short.MAX_VALUE)
+                .addComponent(botonAbrirArchivoProcesos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
                 .addComponent(botonSiguiente))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(botonSiguiente))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonSiguiente)
+                    .addComponent(botonAbrirArchivoProcesos)))
         );
 
         add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -291,6 +314,23 @@ public class ProcesoUI extends javax.swing.JPanel {
         controlador.iniciarVentanaSimulador();
     }//GEN-LAST:event_botonSiguienteActionPerformed
 
+    private void botonAbrirArchivoProcesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAbrirArchivoProcesosActionPerformed
+        int returnVal = selectorArchivo.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = selectorArchivo.getSelectedFile();
+            try {
+                controlador.cargarProcesosDelArchivo(file);
+            }catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,
+                    "Problemas para abrir el archivo.",
+                    "Error Archivo",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            System.out.println("File access cancelled by user.");
+        }
+    }//GEN-LAST:event_botonAbrirArchivoProcesosActionPerformed
+
     private void habilitarCampos() {
         campoDuracionProceso.setText("");
         campoMemoriaRequerida.setText("");
@@ -326,6 +366,7 @@ public class ProcesoUI extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAbrirArchivoProcesos;
     private javax.swing.JButton botonAgregar;
     private javax.swing.JButton botonCancelar;
     private javax.swing.JButton botonEliminarProceso;
@@ -343,6 +384,7 @@ public class ProcesoUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jsp;
+    private javax.swing.JFileChooser selectorArchivo;
     private javax.swing.JTable tablaProcesos;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

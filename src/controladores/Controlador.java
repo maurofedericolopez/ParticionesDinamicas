@@ -1,9 +1,17 @@
 package controladores;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observer;
-import modelo.*;
+import java.util.StringTokenizer;
+import modelo.Estrategia;
+import modelo.Particion;
+import modelo.Proceso;
+import modelo.Simulador;
 import particionesdinamicas.ParticionesDinamicas;
 import vistas.EventosUI;
 import vistas.IndicadoresUI;
@@ -131,6 +139,22 @@ public class Controlador {
 
     public int getProcesoFinalizadoCount() {
         return this.modelo.getProcesosFinalizados().size();
+    }
+
+    public void cargarProcesosDelArchivo(File file) throws IOException {
+        BufferedReader in = new BufferedReader(new FileReader(file));
+        this.modelo.getProcesosEsperando().clear();
+        while(in.ready()) {
+            StringTokenizer linea = new StringTokenizer(in.readLine());
+            while(linea.hasMoreElements()) {
+                String nombre = (String) linea.nextElement();
+                String tiempoArribo = (String) linea.nextElement();
+                String duracion = (String) linea.nextElement();
+                String memoriaRequerida = (String) linea.nextElement();
+                registrarNuevoProceso(nombre, tiempoArribo, duracion, memoriaRequerida);
+            }
+        }
+        in.close();
     }
 
 }
