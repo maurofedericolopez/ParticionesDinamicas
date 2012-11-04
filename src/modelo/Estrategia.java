@@ -15,9 +15,6 @@ public abstract class Estrategia {
 
     public Estrategia() {
         this.particiones = new LinkedList();
-        Integer tamañoMemoriaFisicaDisponible = ParticionesDinamicas.getModelo().getTamañoMemoriaFisica();
-        Particion primeraParticion = new Particion(0, tamañoMemoriaFisicaDisponible);
-        this.particiones.add(primeraParticion);
     }
 
     protected abstract Particion seleccionarParticion(Integer memoriaRequerida);
@@ -28,18 +25,20 @@ public abstract class Estrategia {
         p.setTamaño(proceso.getMemoriaRequerida());
         p.setProceso(proceso);
         p.setEstado(EstadoParticion.OCUPADA);
-        Integer direccionComienzo = p.getDireccionComienzo() + p.getTamaño();
-        Integer nuevoTamañoParticion = tamañoParticion - proceso.getMemoriaRequerida();
-        this.particiones.add(new Particion(direccionComienzo, nuevoTamañoParticion));
-        ordenarParticionesPorDireccionComienzo(particiones);
         proceso.setTiempoCarga(instante);
+        if(tamañoParticion > p.getTamaño()) {
+            Integer direccionComienzo = p.getDireccionComienzo() + p.getTamaño();
+            Integer nuevoTamañoParticion = tamañoParticion - proceso.getMemoriaRequerida();
+            this.particiones.add(new Particion(direccionComienzo, nuevoTamañoParticion));
+            ordenarParticionesPorDireccionComienzo(particiones);
+        }
     }
 
     public void liberarParticion(Proceso proceso) {
-        Iterator<Particion> i = particiones.iterator();
+        Iterator<Particion> i = listarParticionesOcupadas().iterator();
         while(i.hasNext()) {
             Particion p = i.next();
-            if(p.getProceso().equals(proceso)) {
+            if(p.getProceso().equals(proceso)){
                 p.setEstado(EstadoParticion.LIBRE);
                 p.setProceso(null);
                 compactarMemoria();
@@ -48,11 +47,16 @@ public abstract class Estrategia {
         }
     }
 
-    public Integer obtenerFragmentacionExterna() {
-        Iterator<Particion> i = listarParticionesLibres().iterator();
+    public Integer calcularIndiceFragmentacionExterna() {
         Integer suma = 0;
-        while(i.hasNext())
-            suma += i.next().getTamaño();
+        if(!listarParticionesLibres().isEmpty()) {
+            LinkedList<Particion> particionesLibres = listarParticionesLibres();
+            while(!particionesLibres.isEmpty()) {
+                Particion p = particionesLibres.removeFirst();
+                suma += p.getTamaño();
+            }
+                
+        }
         return suma;
     }
 
@@ -60,8 +64,12 @@ public abstract class Estrategia {
         Collections.sort(particiones, new DireccionComienzoParticionComparator());
     }
 
-    protected void ordenarParticionesPorTamaño(LinkedList<Particion> particiones) {
-        Collections.sort(particiones, new TamañoParticionComparator());
+    protected void ordenarParticionesPorTamañoAsc(LinkedList<Particion> particiones) {
+        Collections.sort(particiones, new TamañoParticionAscComparator());
+    }
+
+    protected void ordenarParticionesPorTamañoDesc(LinkedList<Particion> particionesLibres) {
+        Collections.sort(particiones, new TamañoParticionDescComparator());
     }
 
     protected LinkedList<Particion> listarParticionesLibres() {
@@ -87,7 +95,7 @@ public abstract class Estrategia {
     }
 
     public LinkedList<Proceso> listarProcesosFinalizados(Integer instante) {
-        Iterator<Particion> i = particiones.iterator();
+        Iterator<Particion> i = listarParticionesOcupadas().iterator();
         LinkedList<Proceso> procesosFinalizados = new LinkedList();
         while(i.hasNext()) {
             Particion p = i.next();
@@ -101,7 +109,7 @@ public abstract class Estrategia {
      * Compacta la memoria unificando particiones contiguas que tenga estado libre.
      */
     public void compactarMemoria() {
-        for(int i = 0; i < particiones.size()-1; i++) {
+        for(int i = 0; i < particiones.size() - 1; i++) {
             Particion p1 = particiones.get(i);
             Particion p2 = particiones.get(i + 1);
             if(p1.getEstado().equals(EstadoParticion.LIBRE) && p2.getEstado().equals(EstadoParticion.LIBRE)) {
@@ -115,7 +123,7 @@ public abstract class Estrategia {
     public Boolean hayEspacioParaProceso(Integer memoriaRequerida) {
         LinkedList<Particion> particionesLibres = listarParticionesLibres();
         if(particionesLibres != null) {
-            Collections.sort(particionesLibres, new TamañoParticionComparator());
+            Collections.sort(particionesLibres, new TamañoParticionAscComparator());
             while(!particionesLibres.isEmpty()) {
                 Particion primero = particionesLibres.removeFirst();
                 if(primero.getTamaño() >= memoriaRequerida)
@@ -157,6 +165,26 @@ public abstract class Estrategia {
      */
     public void setParticiones(LinkedList<Particion> particiones) {
         this.particiones = particiones;
+    }
+
+    public void crearPrimeraParticion() {
+        Integer tamañoMemoriaFisicaDisponible = ParticionesDinamicas.getModelo().getTamañoMemoriaFisica();
+        Particion primeraParticion = new Particion(0, tamañoMemoriaFisicaDisponible);
+        this.particiones.add(primeraParticion);
+    }
+
+    public LinkedList<Particion> obtenerParticionesActuales() {
+        LinkedList<Particion> nuevasParticiones = new LinkedList();
+        Iterator<Particion> i = particiones.iterator();
+        while(i.hasNext()) {
+            Particion p = i.next();
+            Particion particionNueva = new Particion(p.getDireccionComienzo(), p.getTamaño());
+            particionNueva.setProceso(p.getProceso());
+            particionNueva.setEstado(p.getEstado());
+            nuevasParticiones.add(particionNueva);
+        }
+        this.ordenarParticionesPorDireccionComienzo(nuevasParticiones);
+        return nuevasParticiones;
     }
 
 }

@@ -12,7 +12,7 @@ public class NextFit extends Estrategia {
 
     public NextFit() {
         super();
-        this.direccionComienzoUltimaParticionAsignada = particiones.getFirst().getDireccionComienzo();
+        this.direccionComienzoUltimaParticionAsignada = 0;
     }
 
     @Override
@@ -31,12 +31,14 @@ public class NextFit extends Estrategia {
     }
 
     private LinkedList<Particion> listarParticiones() {
-        LinkedList<Particion> particionesLibres = listarParticiones();
+        LinkedList<Particion> particionesLibres = listarParticionesLibres();
         while(!particionesLibres.isEmpty()) {
             Particion p = particionesLibres.getFirst();
             if(!p.getDireccionComienzo().equals(direccionComienzoUltimaParticionAsignada)) {
                 particionesLibres.addLast(particionesLibres.removeFirst());
             }
+            else
+                break;
         }
         return particionesLibres;
     }

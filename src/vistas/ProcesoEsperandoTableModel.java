@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package vistas;
 
 import controladores.Controlador;
@@ -7,19 +11,17 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author Mauro Federico Lopez
+ * @author Mauro
  */
-public class ProcesoTableModel extends AbstractTableModel implements Observer {
+public class ProcesoEsperandoTableModel extends AbstractTableModel implements Observer {
 
-    private String[] columns = {"Nombre", "Arribo[seg]", "Duracion[seg]", "Memoria Req[k]"};
+    private String[] columns = {"Nombre", "Arribo[seg]", "Duracion[seg]", "Memoria[Kb]"};
     private Controlador controlador;
-    private int columnCount;
 
-    public ProcesoTableModel() {
+    public ProcesoEsperandoTableModel() {
         super();
         this.controlador = new Controlador();
         this.controlador.addObserver(this);
-        System.out.println(""+controlador.countObservers());
     }
 
     @Override
@@ -50,7 +52,6 @@ public class ProcesoTableModel extends AbstractTableModel implements Observer {
 
     @Override
     public int getRowCount() {
-        columnCount = controlador.getProcesoEsperandoCount();
         return controlador.getProcesoEsperandoCount();
     }
 
@@ -78,7 +79,6 @@ public class ProcesoTableModel extends AbstractTableModel implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         this.fireTableDataChanged();
-        this.fireTableStructureChanged();
     }
 
 }

@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -16,9 +17,10 @@ public class WorstFit extends Estrategia {
     protected Particion seleccionarParticion(Integer memoriaRequerida) {
         LinkedList<Particion> particionesLibres = listarParticionesLibres();
         if(particionesLibres != null) {
-            ordenarParticionesPorTamaño(particionesLibres);
-            while(!particionesLibres.isEmpty()) {
-                Particion ultimo = particionesLibres.removeLast();
+            ordenarParticionesPorTamañoDesc(particionesLibres);
+            Iterator<Particion> i = particionesLibres.iterator();
+            while(i.hasNext()){
+                Particion ultimo = i.next();
                 if(ultimo.getTamaño() >= memoriaRequerida)
                     return ultimo;
             }

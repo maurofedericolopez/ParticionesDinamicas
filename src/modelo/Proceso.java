@@ -104,4 +104,15 @@ public class Proceso {
         this.tiempoCarga = tiempoCarga;
     }
 
+    @Override
+    public String toString() {
+        return "Nombre: " + nombre + "\nTiempo de Arribo: " + tiempoArribo + "\nDuracion:  " + duracionTrabajo + "\nMemoria: " + memoriaRequerida;
+    }
+
+    public Integer getTiempoRetorno() {
+        if(tiempoCarga != null && tiempoPartida != null)
+            return tiempoPartida - tiempoArribo;
+        else
+            return 0;
+    }
 }

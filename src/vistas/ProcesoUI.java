@@ -1,6 +1,8 @@
 package vistas;
 
 import controladores.Controlador;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,6 +60,9 @@ public class ProcesoUI extends javax.swing.JPanel {
         titulo.setText("Crear Tanda de Procesos");
         add(titulo, java.awt.BorderLayout.PAGE_START);
 
+        jPanel2.setMaximumSize(new java.awt.Dimension(550, 21));
+        jPanel2.setMinimumSize(new java.awt.Dimension(550, 21));
+
         botonSiguiente.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         botonSiguiente.setText("Ingresar Datos del Simulador");
         botonSiguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -82,6 +87,9 @@ public class ProcesoUI extends javax.swing.JPanel {
         );
 
         add(jPanel2, java.awt.BorderLayout.PAGE_END);
+
+        jPanel3.setMaximumSize(new java.awt.Dimension(196, 257));
+        jPanel3.setMinimumSize(new java.awt.Dimension(196, 257));
 
         botonNuevoProceso.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         botonNuevoProceso.setText("Nuevo Proceso");
@@ -199,6 +207,9 @@ public class ProcesoUI extends javax.swing.JPanel {
 
         add(jPanel3, java.awt.BorderLayout.LINE_END);
 
+        jPanel1.setMaximumSize(new java.awt.Dimension(354, 257));
+        jPanel1.setMinimumSize(new java.awt.Dimension(354, 257));
+
         botonEliminarProceso.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         botonEliminarProceso.setText("Eliminar Proceso");
         botonEliminarProceso.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +218,7 @@ public class ProcesoUI extends javax.swing.JPanel {
             }
         });
 
-        tablaProcesos.setModel(new ProcesoTableModel());
+        tablaProcesos.setModel(new vistas.ProcesoEsperandoTableModel());
         jsp.setViewportView(tablaProcesos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -217,18 +228,20 @@ public class ProcesoUI extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(botonEliminarProceso)
-                    .addComponent(jsp, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(75, Short.MAX_VALUE))
+                    .addComponent(jsp, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(botonEliminarProceso)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jsp, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonEliminarProceso)
-                .addContainerGap())
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -264,7 +277,14 @@ public class ProcesoUI extends javax.swing.JPanel {
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void botonEliminarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarProcesoActionPerformed
-        controlador.eliminarProceso(tablaProcesos.getSelectedRow());
+        try {
+            controlador.eliminarProceso(tablaProcesos.getSelectedRow());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                    "No hay seleccionado un proceso en la tabla para eliminar.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_botonEliminarProcesoActionPerformed
 
     private void botonSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSiguienteActionPerformed

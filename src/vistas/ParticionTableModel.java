@@ -1,23 +1,22 @@
 package vistas;
 
-import controladores.Controlador;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.EstadoParticion;
+import modelo.Particion;
 
 /**
  *
  * @author Mauro Federico Lopez
  */
-public class ParticionTableModel extends AbstractTableModel implements Observer {
+public class ParticionTableModel extends AbstractTableModel {
 
     private String[] columns = {"Identificador", "Dirección Comienzo", "Tamaño", "Estado"};
-    private Controlador controlador;
+    private LinkedList<Particion> particiones;
 
     public ParticionTableModel() {
         super();
-        this.controlador = new Controlador();
+        this.particiones = new LinkedList();
     }
 
     @Override
@@ -38,33 +37,31 @@ public class ParticionTableModel extends AbstractTableModel implements Observer 
 
     @Override
     public int getColumnCount() {
-        return columns.length;
+        return getColumns().length;
     }
 
     @Override
     public String getColumnName(int columnIndex) {
-        return columns[columnIndex];
+        return getColumns()[columnIndex];
     }
 
     @Override
     public int getRowCount() {
-        return controlador.getParticionCount();
+        return getParticiones().size();
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            /**
             case 0 :
-                return controlador.getParticion(rowIndex).getIdentificador();
-                */
+                return rowIndex;
             case 1 :
-                return controlador.getParticion(rowIndex).getDireccionComienzo();
+                return getParticiones().get(rowIndex).getDireccionComienzo();
             case 2 :
-                return controlador.getParticion(rowIndex).getTamaño();
+                return getParticiones().get(rowIndex).getTamaño();
             case 3 :
-                if(controlador.getParticion(rowIndex).getEstado() == EstadoParticion.OCUPADA)
-                    return controlador.getParticion(rowIndex).getProceso().getNombre();
+                if(getParticiones().get(rowIndex).getEstado() == EstadoParticion.OCUPADA)
+                    return getParticiones().get(rowIndex).getProceso().getNombre();
                 else
                     return "LIBRE";
             default :
@@ -77,8 +74,32 @@ public class ParticionTableModel extends AbstractTableModel implements Observer 
         return false;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    /**
+     * @return the columns
+     */
+    public String[] getColumns() {
+        return columns;
+    }
+
+    /**
+     * @param columns the columns to set
+     */
+    public void setColumns(String[] columns) {
+        this.columns = columns;
+    }
+
+    /**
+     * @return the particiones
+     */
+    public LinkedList<Particion> getParticiones() {
+        return particiones;
+    }
+
+    /**
+     * @param particiones the particiones to set
+     */
+    public void setParticiones(LinkedList<Particion> particiones) {
+        this.particiones = particiones;
         this.fireTableDataChanged();
     }
 

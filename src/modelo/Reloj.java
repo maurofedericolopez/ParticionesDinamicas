@@ -1,23 +1,20 @@
 package modelo;
 
-import java.util.Observable;
-
 /**
  *
  * @author Mauro Federico Lopez
  */
-public class Reloj extends Observable {
+public class Reloj {
 
     private Integer instante;
 
     public Reloj() {
         super();
+        instante = 0;
     }
 
     public void incrementarReloj() {
         this.instante++;
-        this.setChanged();
-        this.notifyObservers();
     }
 
     public void resetearReloj() {
@@ -26,6 +23,10 @@ public class Reloj extends Observable {
 
     public Integer obtenerInstante() {
         return this.instante;
+    }
+
+    public void decrementarReloj() {
+        this.instante--;
     }
 
 }

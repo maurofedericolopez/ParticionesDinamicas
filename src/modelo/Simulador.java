@@ -1,12 +1,15 @@
 package modelo;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Observable;
 
 /**
  *
  * @author Mauro Federico Lopez
  */
-public class Simulador implements Observer {
+public class Simulador extends Observable {
 
     private Integer tamañoMemoriaFisica;
     private Integer tiempoSeleccionParticion;
@@ -25,7 +28,6 @@ public class Simulador implements Observer {
         this.procesosFinalizados = new LinkedList();
         this.eventos = new HashMap();
         this.reloj = new Reloj();
-        this.reloj.addObserver(this);
         this.indiceFragmentacionExterna = 0;
     }
 
@@ -41,16 +43,15 @@ public class Simulador implements Observer {
         Collections.sort(procesosEsperando, new TiempoArriboProcesoComparator());
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        simular();
-    }
-
     private Boolean hayProcesosEsperando(Integer instante) {
-        if(procesosEsperando.getFirst().getTiempoArribo() <= instante)
-            return true;
+        if(!procesosEsperando.isEmpty())
+            return procesosEsperando.getFirst().getTiempoArribo() <= instante;
         else
             return false;
+    }
+
+    private Boolean hayProcesosEnCola() {
+        return !procesosEsperando.isEmpty();
     }
 
     private Boolean hayProcesosEnMemoria() {
@@ -63,31 +64,37 @@ public class Simulador implements Observer {
 
     private void simularSeleccionParticion(String nombreProceso) {
         for(int i = 0; i < tiempoSeleccionParticion; i++) {
-                String msg = "Seleccionando una particion para el proceso " + nombreProceso;
-                this.getEventos().put(getReloj().obtenerInstante(), new Evento(estrategiaSeleccionParticion.getParticiones(), msg));
-                this.indiceFragmentacionExterna += this.estrategiaSeleccionParticion.obtenerFragmentacionExterna();
+                String msg = "Seleccionando una particion para el proceso '" + nombreProceso + "'";
+                crearNuevoEvento(msg);
+                calcularFragmentacionExterna();
                 getReloj().incrementarReloj();
             }
     }
 
     private void simularCargaDeProceso(String nombreProceso) {
         for(int i = 0; i < tiempoCargaPromedio; i++) {
-            String msg = "Cargando el proceso " + nombreProceso + " en la particion seleccionada";
-            this.getEventos().put(getReloj().obtenerInstante(), new Evento(estrategiaSeleccionParticion.getParticiones(), msg));
-            this.indiceFragmentacionExterna += this.estrategiaSeleccionParticion.obtenerFragmentacionExterna();
+            String msg = "Cargando el proceso '" + nombreProceso + "' en la particion seleccionada";
+            crearNuevoEvento(msg);
+            calcularFragmentacionExterna();
             getReloj().incrementarReloj();
         }
     }
 
     private void simularLiberacionDeParticion(String nombreProceso) {
         for(int i = 0; i < tiempoLiberacionParticion; i++) {
-            String msg = "Liberando la particion que ocupa el proceso " + nombreProceso;
-            this.getEventos().put(getReloj().obtenerInstante(), new Evento(estrategiaSeleccionParticion.getParticiones(), msg));
-            this.indiceFragmentacionExterna += this.estrategiaSeleccionParticion.obtenerFragmentacionExterna();
+            crearNuevoEvento("Liberando la particion que ocupa el proceso '" + nombreProceso + "' e intentando compactar la memoria");
+            calcularFragmentacionExterna();
             getReloj().incrementarReloj();
         }
-        this.getEventos().put(getReloj().obtenerInstante(), new Evento(estrategiaSeleccionParticion.getParticiones(),"Intentando compactar la memoria"));
-        getReloj().incrementarReloj();
+    }
+
+    private void crearNuevoEvento(String msg) {
+        this.getEventos().put(getReloj().obtenerInstante(), new Evento(estrategiaSeleccionParticion.obtenerParticionesActuales(), msg));
+    }
+
+    private void calcularFragmentacionExterna() {
+        if(hayProcesosEsperando(reloj.obtenerInstante()))
+            this.indiceFragmentacionExterna += this.estrategiaSeleccionParticion.calcularIndiceFragmentacionExterna();
     }
 
     public void simular() {
@@ -101,6 +108,7 @@ public class Simulador implements Observer {
                 this.getProcesosFinalizados().addLast(p);
             }
         }
+
         if(hayProcesosEsperando(getReloj().obtenerInstante())) {
             Proceso p = procesosEsperando.removeFirst();
             simularSeleccionParticion(p.getNombre());
@@ -109,14 +117,43 @@ public class Simulador implements Observer {
                 estrategiaSeleccionParticion.asignarParticion(p,getReloj().obtenerInstante());
             }
             else {
-                procesosEsperando.addFirst(p);
-                String msg = "No se encontro espacio para cargar el proceso " + p.getNombre();
-                this.getEventos().put(getReloj().obtenerInstante() - 1, new Evento(estrategiaSeleccionParticion.getParticiones(), msg));
+                reloj.decrementarReloj();
+                if(p.getMemoriaRequerida() <= tamañoMemoriaFisica) {
+                    procesosEsperando.addFirst(p);
+                    crearNuevoEvento("No se encontro espacio para cargar el proceso '" + p.getNombre() + "'");
+                    calcularFragmentacionExterna();
+                    reloj.incrementarReloj();
+                }
+                else {
+                    crearNuevoEvento("La memoria requerida por el proceso '" + p.getNombre() +"' no es soportada");
+                    calcularFragmentacionExterna();
+                    procesosFinalizados.addLast(p);
+                    reloj.incrementarReloj();
+                }
             }
         }
-        if(hayProcesosEnMemoria() || hayProcesosEsperando(reloj.obtenerInstante())) {
-            this.getReloj().incrementarReloj();
+
+        if(hayProcesosEsperando(reloj.obtenerInstante())){
+            simular();
         }
+        else
+            if(hayProcesosEnMemoria()) {
+                crearNuevoEvento("Esperando a que termine al menos un proceso");
+                calcularFragmentacionExterna();
+                reloj.incrementarReloj();
+                simular();
+            }
+            else
+                if(hayProcesosEnCola()) {
+                    crearNuevoEvento("Esperando a que arriben procesos");
+                    calcularFragmentacionExterna();
+                    reloj.incrementarReloj();
+                    simular();
+                }
+                else
+                    if(!hayProcesosEnMemoria() && !hayProcesosEnCola()) {
+                        crearNuevoEvento("Fin de la simulación");
+                    }
     }
 
     /**
@@ -257,6 +294,11 @@ public class Simulador implements Observer {
      */
     public void setReloj(Reloj reloj) {
         this.reloj = reloj;
+    }
+
+    public void notificarCambio() {
+        setChanged();
+        notifyObservers();
     }
 
 }

@@ -1,10 +1,9 @@
 package vistas;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JComponent;
-import modelo.Simulador;
-import particionesdinamicas.ParticionesDinamicas;
 
 /**
  *
@@ -12,23 +11,19 @@ import particionesdinamicas.ParticionesDinamicas;
  */
 public class Principal extends javax.swing.JFrame {
 
-    private static Container contenedor;
-
-    /**
-     * @param aLayout the layout to set
-     */
-    public static void setContenedor(Container aContenedor) {
-        contenedor = aContenedor;
-    }
-
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
-        ParticionesDinamicas.setModelo(new Simulador());
-        Principal.contenedor = this.getContentPane();
-        Principal.agregarComponenteAlCentro(new ProcesoUI());
+        this.agregarComponenteAlCentro(new ProcesoUI());
+        // get screen dimensions
+
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();
+        int screenHeight = screenSize.height;
+        int screenWidth = screenSize.width;
+        setLocationByPlatform(true);
     }
 
     /**
@@ -41,8 +36,12 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 350));
-        setMinimumSize(new java.awt.Dimension(600, 350));
+        setTitle("Simulador");
+        setLocationByPlatform(true);
+        setMaximumSize(new java.awt.Dimension(550, 600));
+        setMinimumSize(new java.awt.Dimension(550, 600));
+        setName("Simulador");
+        setPreferredSize(new java.awt.Dimension(550, 600));
         setResizable(false);
 
         pack();
@@ -91,11 +90,26 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
-    public static void agregarComponenteAlCentro(JComponent componente) {
-        Principal.contenedor.removeAll();
-        Principal.contenedor.add(componente, BorderLayout.CENTER);
+    public void agregarComponenteAlCentro(JComponent componente) {
+        this.getContentPane().removeAll();
+        this.setMinimumSize(new Dimension(550, 300));
+        this.setMaximumSize(new Dimension(550, 300));
+        this.add(componente, BorderLayout.CENTER);
         componente.setVisible(true);
         componente.updateUI();
+    }
+
+    public void agregarComponenteAlCentro(JComponent componente1, JComponent componente2) {
+        this.getContentPane().removeAll();
+        this.add(componente1, BorderLayout.PAGE_START);
+        componente1.setVisible(true);
+        componente1.updateUI();
+        this.add(componente2, BorderLayout.CENTER);
+        componente2.setVisible(true);
+        componente2.updateUI();
+        
+        this.setMinimumSize(new Dimension(550, 600));
+        //this.pack();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

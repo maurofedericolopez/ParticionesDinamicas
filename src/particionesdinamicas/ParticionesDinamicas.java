@@ -10,6 +10,7 @@ import vistas.Principal;
 public class ParticionesDinamicas {
 
     private static Simulador modelo;
+    private static Principal ventanaPrincipal;
 
     /**
      * @return the modelo
@@ -26,12 +27,27 @@ public class ParticionesDinamicas {
     }
 
     /**
+     * @return the ventanaPrincipal
+     */
+    public static Principal getVentanaPrincipal() {
+        return ventanaPrincipal;
+    }
+
+    /**
+     * @param aVentanaPrincipal the ventanaPrincipal to set
+     */
+    public static void setVentanaPrincipal(Principal aVentanaPrincipal) {
+        ventanaPrincipal = aVentanaPrincipal;
+    }
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Principal ventanaPrincipal = new Principal();
-        ventanaPrincipal.setVisible(true);
-        ventanaPrincipal.pack();
+        ParticionesDinamicas.setModelo(new Simulador());
+        setVentanaPrincipal(new Principal());
+        getVentanaPrincipal().setVisible(true);
+        getVentanaPrincipal().pack();
     }
 
 }

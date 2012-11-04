@@ -1,45 +1,47 @@
 package controladores;
 
-import java.util.Observable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Observer;
 import modelo.*;
 import particionesdinamicas.ParticionesDinamicas;
-import vistas.Principal;
+import vistas.EventosUI;
+import vistas.IndicadoresUI;
 import vistas.ProcesoUI;
-import vistas.ResultadoUI;
 import vistas.SimuladorUI;
 
 /**
  *
  * @author Mauro Federico Lopez
  */
-public class Controlador extends Observable {
+public class Controlador {
 
     private Simulador modelo;
-    private Evento evento;
 
     public Controlador() {
-        super();
         this.modelo = ParticionesDinamicas.getModelo();
     }
 
-    public void cargarDatosSimulador(String tamañoMemoriaFisica, String tiempoSeleccionParticion, String tiempoCargaPromedio, String tiempoLiberacionParticion, Estrategia estrategiaSeleccionParticion)
-                                     throws NumberFormatException, NullPointerException {
-        Integer TMF = Integer.parseInt(tamañoMemoriaFisica);
-        Integer TSP = Integer.parseInt(tiempoSeleccionParticion);
-        Integer TCP = Integer.parseInt(tiempoCargaPromedio);
-        Integer TLP = Integer.parseInt(tiempoLiberacionParticion);
-        this.modelo.setTamañoMemoriaFisica(TMF);
-        this.modelo.setTiempoSeleccionParticion(TSP);
-        this.modelo.setTiempoCargaPromedio(TCP);
-        this.modelo.setTiempoLiberacionParticion(TLP);
-        this.modelo.setEstrategiaSeleccionParticion(estrategiaSeleccionParticion);
+    public void addObserver(Observer o) {
+        this.modelo.addObserver(o);
     }
 
-    public void eliminarProceso(int rowIndex) {
-        if(rowIndex >= 0)
+    public void cargarDatosSimulador(String TMF, String TSP, String TCP, String TLP, Estrategia ESP) throws NumberFormatException, NullPointerException {
+        this.modelo.setTamañoMemoriaFisica(Integer.parseInt(TMF));
+        this.modelo.setTiempoSeleccionParticion(Integer.parseInt(TSP));
+        this.modelo.setTiempoCargaPromedio(Integer.parseInt(TCP));
+        this.modelo.setTiempoLiberacionParticion(Integer.parseInt(TLP));
+        this.modelo.setEstrategiaSeleccionParticion(ESP);
+        ESP.crearPrimeraParticion();
+    }
+
+    public void eliminarProceso(int rowIndex) throws Exception {
+        if(rowIndex >= 0) {
             this.modelo.getProcesosEsperando().remove(rowIndex);
-        setChanged();
-        notifyObservers();
+            this.modelo.notificarCambio();
+        }
+        else
+            throw new Exception();
     }
 
     public Particion getParticion(int rowIndex) {
@@ -63,23 +65,44 @@ public class Controlador extends Observable {
         Integer t = Integer.parseInt(tiempoArribo);
         Integer d = Integer.parseInt(duracion);
         Integer m = Integer.parseInt(memoriaRequerida);
-        Proceso nuevoProceso = new Proceso(nombre, t, d, m);
+        Proceso nuevoProceso = new Proceso(nombre.toUpperCase(), t, d, m);
         this.modelo.getProcesosEsperando().add(nuevoProceso);
         this.modelo.ordenarProcesosPorTiempoArribo(this.modelo.getProcesosEsperando());
-        setChanged();
-        notifyObservers();
+        this.modelo.notificarCambio();
     }
 
-    public int getInstanteFinal() {
+    public Integer getInstanteFinal() {
         return modelo.getReloj().obtenerInstante();
     }
 
-    public void mostrarEvento(Integer instante) {
-        evento = modelo.getEventos().get(instante);
+    public Integer obtenerTiempoRetornoTanda() {
+        return modelo.getReloj().obtenerInstante() - 1;
     }
 
-    public String obtenerTextoDelEvento() {
-        return evento.getCadenas();
+    public LinkedList<Particion> obtenerPaticiones(Integer instante) {
+        return modelo.getEventos().get(instante).getParticiones();
+    }
+
+    public String obtenerEvento(Integer instante) {
+        return modelo.getEventos().get(instante).getCadenas();
+    }
+
+    public Integer obtenerIndiceFragmentacionExterna() {
+        return modelo.getIndiceFragmentacionExterna();
+    }
+
+    public Integer obtenerTiempoMedioRetorno() {
+        Integer sumaTiemposRetornos = 0;
+        Integer cantProcesos = 0;
+        Iterator<Proceso> i = modelo.getProcesosFinalizados().iterator();
+        while(i.hasNext()) {
+            Proceso p = i.next();
+            if(p.getTiempoRetorno() > 0) {
+                cantProcesos++;
+                sumaTiemposRetornos += p.getTiempoRetorno();
+            }
+        }
+        return sumaTiemposRetornos / cantProcesos;
     }
 
     public void iniciarSimulacion() {
@@ -87,19 +110,27 @@ public class Controlador extends Observable {
     }
 
     public void iniciarVentanaProceso() {
-        Principal.agregarComponenteAlCentro(new ProcesoUI());
+        ParticionesDinamicas.getVentanaPrincipal().agregarComponenteAlCentro(new ProcesoUI());
     }
 
     public void iniciarVentanaSimulador() {
-        Principal.agregarComponenteAlCentro(new SimuladorUI());
+        ParticionesDinamicas.getVentanaPrincipal().agregarComponenteAlCentro(new SimuladorUI());
     }
 
     public void iniciarVentanaResultado() {
-        Principal.agregarComponenteAlCentro(new ResultadoUI());
+        ParticionesDinamicas.getVentanaPrincipal().agregarComponenteAlCentro(new IndicadoresUI(), new EventosUI());
     }
 
     public void crearNuevaSimulacion() {
         ParticionesDinamicas.setModelo(new Simulador());
+    }
+
+    public Proceso getProcesoFinalizado(int rowIndex) {
+        return this.modelo.getProcesosFinalizados().get(rowIndex);
+    }
+
+    public int getProcesoFinalizadoCount() {
+        return this.modelo.getProcesosFinalizados().size();
     }
 
 }

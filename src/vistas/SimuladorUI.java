@@ -1,6 +1,7 @@
 package vistas;
 
 import controladores.Controlador;
+import javax.swing.JOptionPane;
 import modelo.*;
 
 /**
@@ -18,6 +19,10 @@ public class SimuladorUI extends javax.swing.JPanel {
     public SimuladorUI() {
         initComponents();
         this.controlador = new Controlador();
+        grupoBotones.add(botonFirstFit);
+        grupoBotones.add(botonNextFit);
+        grupoBotones.add(botonBestFit);
+        grupoBotones.add(botonWorstFit);
     }
 
     /**
@@ -35,17 +40,17 @@ public class SimuladorUI extends javax.swing.JPanel {
         botonSimular = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        campoTamañoMemoriaFisicaDisponible = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         botonFirstFit = new javax.swing.JRadioButton();
         botonNextFit = new javax.swing.JRadioButton();
         botonBestFit = new javax.swing.JRadioButton();
         botonWorstFit = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
-        campoTiempoSeleccionParticion = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        campoTiempoCargaPromedio = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        campoTamañoMemoriaFisicaDisponible = new javax.swing.JTextField();
+        campoTiempoSeleccionParticion = new javax.swing.JTextField();
+        campoTiempoCargaPromedio = new javax.swing.JTextField();
         campoTiempoLiberacionParticion = new javax.swing.JTextField();
 
         setMaximumSize(new java.awt.Dimension(550, 300));
@@ -88,8 +93,6 @@ public class SimuladorUI extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel2.setText("Tamaño de memoria física disponible [kb]");
 
-        campoTamañoMemoriaFisicaDisponible.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel3.setText("Estrategia de selección de particiones");
 
@@ -128,17 +131,11 @@ public class SimuladorUI extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel4.setText("Tiempo de selección de partición [seg]");
 
-        campoTiempoSeleccionParticion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel5.setText("Tiempo de carga promedio [seg]");
 
-        campoTiempoCargaPromedio.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel6.setText("Tiempo de liberación de partición [seg]");
-
-        campoTiempoLiberacionParticion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -155,24 +152,22 @@ public class SimuladorUI extends javax.swing.JPanel {
                             .addComponent(botonFirstFit)
                             .addComponent(botonBestFit)
                             .addComponent(botonWorstFit)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(campoTamañoMemoriaFisicaDisponible)
-                            .addComponent(campoTiempoSeleccionParticion)
-                            .addComponent(campoTiempoCargaPromedio)
-                            .addComponent(campoTiempoLiberacionParticion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(239, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(campoTamañoMemoriaFisicaDisponible)
+                    .addComponent(campoTiempoSeleccionParticion)
+                    .addComponent(campoTiempoCargaPromedio)
+                    .addComponent(campoTiempoLiberacionParticion, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
+                .addContainerGap(247, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(campoTamañoMemoriaFisicaDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -198,20 +193,32 @@ public class SimuladorUI extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(campoTiempoLiberacionParticion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonSimularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSimularActionPerformed
-        String tamañoMemoriaFisica = campoTamañoMemoriaFisicaDisponible.getText();
-        String tiempoSeleccionParticion = campoTiempoSeleccionParticion.getText();
-        String tiempoCargaPromedio = campoTiempoCargaPromedio.getText();
-        String tiempoLiberacionParticion = campoTiempoLiberacionParticion.getText();
-        controlador.cargarDatosSimulador(tamañoMemoriaFisica, tiempoSeleccionParticion, tiempoCargaPromedio, tiempoLiberacionParticion, estrategiaSeleccionParticion);
-        controlador.iniciarSimulacion();
-        controlador.iniciarVentanaResultado();
+        try {
+            String tamañoMemoriaFisica = campoTamañoMemoriaFisicaDisponible.getText();
+            String tiempoSeleccionParticion = campoTiempoSeleccionParticion.getText();
+            String tiempoCargaPromedio = campoTiempoCargaPromedio.getText();
+            String tiempoLiberacionParticion = campoTiempoLiberacionParticion.getText();
+            controlador.cargarDatosSimulador(tamañoMemoriaFisica, tiempoSeleccionParticion, tiempoCargaPromedio, tiempoLiberacionParticion, estrategiaSeleccionParticion);
+            controlador.iniciarSimulacion();
+            controlador.iniciarVentanaResultado();
+        } catch (NumberFormatException numberFormatException) {
+            JOptionPane.showMessageDialog(null,
+                    "Los datos ingresados no son numéricos.",
+                    "Error Numérico",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (NullPointerException nullPointerException) {
+            JOptionPane.showMessageDialog(null,
+                    "Ingrese todos los datos correctamente.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_botonSimularActionPerformed
 
     private void botonFirstFitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFirstFitActionPerformed

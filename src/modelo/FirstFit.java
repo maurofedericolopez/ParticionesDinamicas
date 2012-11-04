@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -17,8 +18,9 @@ public class FirstFit extends Estrategia {
         LinkedList<Particion> particionesLibres = listarParticionesLibres();
         if(particionesLibres != null) {
             ordenarParticionesPorDireccionComienzo(particionesLibres);
-            while(!particionesLibres.isEmpty()) {
-                Particion primero = particionesLibres.removeFirst();
+            Iterator<Particion> i = particionesLibres.iterator();
+            while(i.hasNext()){
+                Particion primero = i.next();
                 if(primero.getTamaño() >= memoriaRequerida)
                     return primero;
             }
