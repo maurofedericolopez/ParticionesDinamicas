@@ -1,5 +1,6 @@
 package vistas;
 
+import controladores.Controlador;
 import java.util.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.EstadoParticion;

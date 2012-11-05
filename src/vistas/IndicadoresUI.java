@@ -1,6 +1,7 @@
 package vistas;
 
 import controladores.Controlador;
+import particionesdinamicas.ParticionesDinamicas;
 
 /**
  *
@@ -15,7 +16,7 @@ public class IndicadoresUI extends javax.swing.JPanel {
      */
     public IndicadoresUI() {
         initComponents();
-        controlador = new Controlador();
+        controlador = ParticionesDinamicas.getControlador();
         tiempoRetornoTanda.setText(String.valueOf(controlador.obtenerTiempoRetornoTanda()));
         tiempoMedioRetorno.setText(String.valueOf(controlador.obtenerTiempoMedioRetorno()));
         indiceFragmentacionExterna.setText(String.valueOf(controlador.obtenerIndiceFragmentacionExterna()));

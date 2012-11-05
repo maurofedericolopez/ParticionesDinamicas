@@ -4,33 +4,26 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Observer;
-import java.util.StringTokenizer;
-import modelo.Estrategia;
-import modelo.Particion;
-import modelo.Proceso;
-import modelo.Simulador;
+import java.util.*;
+import modelo.*;
 import particionesdinamicas.ParticionesDinamicas;
-import vistas.EventosUI;
-import vistas.IndicadoresUI;
-import vistas.ProcesoUI;
-import vistas.SimuladorUI;
+import vistas.*;
 
 /**
  *
  * @author Mauro Federico Lopez
  */
-public class Controlador {
+public class Controlador extends Observable {
 
     private Simulador modelo;
+    private Evento evento;
 
     public Controlador() {
         this.modelo = ParticionesDinamicas.getModelo();
+        evento = new Evento(new LinkedList<Particion>(), "");
     }
 
-    public void addObserver(Observer o) {
+    public void addObserverModelo(Observer o) {
         this.modelo.addObserver(o);
     }
 
@@ -84,15 +77,20 @@ public class Controlador {
     }
 
     public Integer obtenerTiempoRetornoTanda() {
-        return modelo.getReloj().obtenerInstante() - 1;
+        Iterator<Proceso> i = modelo.getProcesosFinalizados().iterator();
+        Integer suma = 0;
+        while(i.hasNext()) {
+            suma += i.next().getTiempoRetorno();
+        }
+        return suma;
     }
 
-    public LinkedList<Particion> obtenerPaticiones(Integer instante) {
-        return modelo.getEventos().get(instante).getParticiones();
+    public LinkedList<Particion> obtenerPaticiones() {
+        return evento.getParticiones();
     }
 
-    public String obtenerEvento(Integer instante) {
-        return modelo.getEventos().get(instante).getCadenas();
+    public String obtenerEvento() {
+        return evento.getCadenas();
     }
 
     public Integer obtenerIndiceFragmentacionExterna() {
@@ -110,7 +108,10 @@ public class Controlador {
                 sumaTiemposRetornos += p.getTiempoRetorno();
             }
         }
-        return sumaTiemposRetornos / cantProcesos;
+        if(cantProcesos > 0)
+            return sumaTiemposRetornos / cantProcesos;
+        else
+            return 0;
     }
 
     public void iniciarSimulacion() {
@@ -119,6 +120,8 @@ public class Controlador {
 
     public void iniciarVentanaProceso() {
         ParticionesDinamicas.getVentanaPrincipal().agregarComponenteAlCentro(new ProcesoUI());
+        ParticionesDinamicas.getVentanaSimulacion().setVisible(false);
+        ParticionesDinamicas.setVentanaSimulacion(null);
     }
 
     public void iniciarVentanaSimulador() {
@@ -127,10 +130,13 @@ public class Controlador {
 
     public void iniciarVentanaResultado() {
         ParticionesDinamicas.getVentanaPrincipal().agregarComponenteAlCentro(new IndicadoresUI(), new EventosUI());
+        ParticionesDinamicas.setVentanaSimulacion(new SimulacionMemoriaUI());
+        this.establecerEvento(0);
     }
 
     public void crearNuevaSimulacion() {
         ParticionesDinamicas.setModelo(new Simulador());
+        modelo = ParticionesDinamicas.getModelo();
     }
 
     public Proceso getProcesoFinalizado(int rowIndex) {
@@ -142,19 +148,25 @@ public class Controlador {
     }
 
     public void cargarProcesosDelArchivo(File file) throws IOException {
-        BufferedReader in = new BufferedReader(new FileReader(file));
-        this.modelo.getProcesosEsperando().clear();
-        while(in.ready()) {
-            StringTokenizer linea = new StringTokenizer(in.readLine());
-            while(linea.hasMoreElements()) {
-                String nombre = (String) linea.nextElement();
-                String tiempoArribo = (String) linea.nextElement();
-                String duracion = (String) linea.nextElement();
-                String memoriaRequerida = (String) linea.nextElement();
-                registrarNuevoProceso(nombre, tiempoArribo, duracion, memoriaRequerida);
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+            this.modelo.getProcesosEsperando().clear();
+            while(in.ready()) {
+                StringTokenizer linea = new StringTokenizer(in.readLine());
+                while(linea.hasMoreElements()) {
+                    String nombre = (String) linea.nextElement();
+                    String tiempoArribo = (String) linea.nextElement();
+                    String duracion = (String) linea.nextElement();
+                    String memoriaRequerida = (String) linea.nextElement();
+                    registrarNuevoProceso(nombre, tiempoArribo, duracion, memoriaRequerida);
+                }
             }
         }
-        in.close();
+    }
+
+    public void establecerEvento(Integer instante) {
+        this.evento = modelo.getEventos().get(instante);
+        setChanged();
+        notifyObservers();
     }
 
 }

@@ -3,6 +3,7 @@ package vistas;
 import controladores.Controlador;
 import javax.swing.JOptionPane;
 import modelo.*;
+import particionesdinamicas.ParticionesDinamicas;
 
 /**
  *
@@ -18,7 +19,7 @@ public class SimuladorUI extends javax.swing.JPanel {
      */
     public SimuladorUI() {
         initComponents();
-        this.controlador = new Controlador();
+        this.controlador = ParticionesDinamicas.getControlador();
         grupoBotones.add(botonFirstFit);
         grupoBotones.add(botonNextFit);
         grupoBotones.add(botonBestFit);

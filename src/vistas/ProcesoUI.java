@@ -3,11 +3,10 @@ package vistas;
 import controladores.Controlador;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import particionesdinamicas.ParticionesDinamicas;
 
 /**
  *
@@ -22,7 +21,7 @@ public class ProcesoUI extends javax.swing.JPanel {
      */
     public ProcesoUI() {
         initComponents();
-        controlador = new Controlador();
+        controlador = ParticionesDinamicas.getControlador();
     }
 
     /**

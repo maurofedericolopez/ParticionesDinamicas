@@ -3,6 +3,9 @@ package vistas;
 import controladores.Controlador;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import particionesdinamicas.ParticionesDinamicas;
 
 /**
  *
@@ -17,13 +20,19 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
      */
     public EventosUI() {
         initComponents();
-        controlador = new Controlador();
+        controlador = ParticionesDinamicas.getControlador();
         controlador.addObserver(this);
         tablaEventos.setModel(new ParticionTableModel());
         slider.setMaximum(controlador.getInstanteFinal());
         slider.setMinimum(0);
         slider.setMajorTickSpacing(controlador.getInstanteFinal());
-        slider.addChangeListener(new SliderChangeListener(this));
+        slider.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                controlador.establecerEvento(slider.getValue());
+            }
+        });
         slider.setValue(0);
     }
 
@@ -182,7 +191,8 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        
+        textoEvento.setText(controlador.obtenerEvento());
+        ((ParticionTableModel) tablaEventos.getModel()).setParticiones(controlador.obtenerPaticiones());
     }
 
     /**

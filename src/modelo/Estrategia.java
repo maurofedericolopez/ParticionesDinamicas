@@ -41,10 +41,10 @@ public abstract class Estrategia {
             if(p.getProceso().equals(proceso)){
                 p.setEstado(EstadoParticion.LIBRE);
                 p.setProceso(null);
-                compactarMemoria();
                 break;
             }
         }
+        compactarMemoria();
     }
 
     public Integer calcularIndiceFragmentacionExterna() {
@@ -109,15 +109,16 @@ public abstract class Estrategia {
      * Compacta la memoria unificando particiones contiguas que tenga estado libre.
      */
     public void compactarMemoria() {
-        for(int i = 0; i < particiones.size() - 1; i++) {
-            Particion p1 = particiones.get(i);
-            Particion p2 = particiones.get(i + 1);
-            if(p1.getEstado().equals(EstadoParticion.LIBRE) && p2.getEstado().equals(EstadoParticion.LIBRE)) {
-                p2.setTamaño(p1.getTamaño() + p2.getTamaño());
-                p2.setDireccionComienzo(p1.getDireccionComienzo());
-                particiones.remove(p1);
+        while(hayParticionesParaCompactar())
+            for(int i = 0; i < particiones.size() - 1; i++) {
+                Particion p1 = particiones.get(i);
+                Particion p2 = particiones.get(i + 1);
+                if(p1.getEstado().equals(EstadoParticion.LIBRE) && p2.getEstado().equals(EstadoParticion.LIBRE)) {
+                    p2.setTamaño(p1.getTamaño() + p2.getTamaño());
+                    p2.setDireccionComienzo(p1.getDireccionComienzo());
+                    particiones.remove(p1);
+                }
             }
-        }
     }
 
     public Boolean hayEspacioParaProceso(Integer memoriaRequerida) {
@@ -185,6 +186,17 @@ public abstract class Estrategia {
         }
         this.ordenarParticionesPorDireccionComienzo(nuevasParticiones);
         return nuevasParticiones;
+    }
+
+    private Boolean hayParticionesParaCompactar() {
+        for(int i = 0; i < particiones.size() - 1; i++) {
+            Particion p1 = particiones.get(i);
+            Particion p2 = particiones.get(i + 1);
+            if(p1.getEstado().equals(EstadoParticion.LIBRE) && p2.getEstado().equals(EstadoParticion.LIBRE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

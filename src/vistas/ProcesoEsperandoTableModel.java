@@ -21,7 +21,7 @@ public class ProcesoEsperandoTableModel extends AbstractTableModel implements Ob
     public ProcesoEsperandoTableModel() {
         super();
         this.controlador = new Controlador();
-        this.controlador.addObserver(this);
+        this.controlador.addObserverModelo(this);
     }
 
     @Override
