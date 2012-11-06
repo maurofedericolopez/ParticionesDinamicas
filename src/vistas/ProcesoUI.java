@@ -322,13 +322,11 @@ public class ProcesoUI extends javax.swing.JPanel {
             File file = selectorArchivo.getSelectedFile();
             try {
                 controlador.cargarProcesosDelArchivo(file);
-            }catch (IOException | NumberFormatException ex) {
+            }catch (IOException | NoSuchElementException | NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null,
                     "Problemas para abrir el archivo.",
                     "Error Archivo",
                     JOptionPane.ERROR_MESSAGE);
-            }catch (NoSuchElementException nex) {
-                
             }
         }
     }//GEN-LAST:event_botonAbrirArchivoProcesosActionPerformed

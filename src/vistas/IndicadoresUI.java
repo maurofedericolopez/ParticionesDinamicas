@@ -17,9 +17,9 @@ public class IndicadoresUI extends javax.swing.JPanel {
     public IndicadoresUI() {
         initComponents();
         controlador = ParticionesDinamicas.getControlador();
-        tiempoRetornoTanda.setText(String.valueOf(controlador.obtenerTiempoRetornoTanda()));
-        tiempoMedioRetorno.setText(String.valueOf(controlador.obtenerTiempoMedioRetorno()));
-        indiceFragmentacionExterna.setText(String.valueOf(controlador.obtenerIndiceFragmentacionExterna()));
+        tiempoRetornoTanda.setText(String.valueOf(controlador.obtenerTiempoRetornoTanda()) + " t");
+        tiempoMedioRetorno.setText(String.valueOf(controlador.obtenerTiempoMedioRetorno()) + " t");
+        indiceFragmentacionExterna.setText(String.valueOf(controlador.obtenerIndiceFragmentacionExterna()) + " K");
         memoriaFisicaDisponible.setText(memoriaFisicaDisponible.getText() + " " + controlador.obtenerMemoriaFisicaDisponible());
         estrategiaSeleccionParticion.setText(estrategiaSeleccionParticion.getText() + " " + controlador.obtenerEstrategiaSeleccionParticion());
         tiempoSeleccionParticion.setText(tiempoSeleccionParticion.getText() + " " + controlador.obtenerTiempoSeleccionParticion());

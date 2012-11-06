@@ -40,10 +40,8 @@ public class NextFit extends Estrategia {
         Integer i = particionesLibres.getLast().getDireccionComienzo();
         while(!particionesLibres.isEmpty()) {
             Particion p = particionesLibres.getFirst();
-            if(p.getDireccionComienzo() < direccionComienzoUltimaParticionAsignada && i != p.getDireccionComienzo()) {
+            if(p.getDireccionComienzo() < direccionComienzoUltimaParticionAsignada && i != p.getDireccionComienzo())
                 particionesLibres.addLast(particionesLibres.removeFirst());
-                System.out.println("" + p.getDireccionComienzo() + " < " + direccionComienzoUltimaParticionAsignada);
-            }
             else
                 break;
         }

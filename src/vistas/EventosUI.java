@@ -182,8 +182,10 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        textoEvento.setText(controlador.obtenerEvento());
+        textoEvento.setText(slider.getValue() + ": " +controlador.obtenerEvento());
         ((ParticionTableModel) tablaEventos.getModel()).setParticiones(controlador.obtenerPaticiones());
+        slider.setToolTipText(String.valueOf(slider.getValue()));
+        slider.setName(String.valueOf(slider.getValue()));
     }
 
     /**

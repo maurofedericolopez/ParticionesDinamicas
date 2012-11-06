@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ProcesoEsperandoTableModel extends AbstractTableModel implements Observer {
 
-    private String[] columns = {"Nombre", "Arribo[seg]", "Duracion[seg]", "Memoria[Kb]"};
+    private String[] columns = {"Nombre", "Arribo[t]", "Duracion[t]", "Memoria[K]"};
     private Controlador controlador;
 
     public ProcesoEsperandoTableModel() {

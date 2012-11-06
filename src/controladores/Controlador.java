@@ -165,7 +165,7 @@ public class Controlador extends Observable {
     }
 
     public String obtenerMemoriaFisicaDisponible() {
-        return String.valueOf(modelo.getTamañoMemoriaFisica()) + " Kb";
+        return String.valueOf(modelo.getTamañoMemoriaFisica()) + " K";
     }
 
     public String obtenerEstrategiaSeleccionParticion() {
@@ -173,15 +173,15 @@ public class Controlador extends Observable {
     }
 
     public String obtenerTiempoSeleccionParticion() {
-        return String.valueOf(modelo.getTiempoSeleccionParticion()) + " seg";
+        return String.valueOf(modelo.getTiempoSeleccionParticion()) + " t";
     }
 
     public String obtenerTiempoCargaPromedio() {
-        return String.valueOf(modelo.getTiempoCargaPromedio()) + " seg";
+        return String.valueOf(modelo.getTiempoCargaPromedio()) + " t";
     }
 
     public String obtenerTiempoLiberacionParticion() {
-        return String.valueOf(modelo.getTiempoLiberacionParticion()) + " seg";
+        return String.valueOf(modelo.getTiempoLiberacionParticion()) + " t";
     }
 
 }

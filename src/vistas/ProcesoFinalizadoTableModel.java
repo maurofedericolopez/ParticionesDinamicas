@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ProcesoFinalizadoTableModel extends AbstractTableModel {
 
-    private String[] columns = {"Nombre", "Tiempo Retorno"};
+    private String[] columns = {"Nombre", "Tiempo Retorno[t]"};
     private Controlador controlador;
 
     public ProcesoFinalizadoTableModel() {
