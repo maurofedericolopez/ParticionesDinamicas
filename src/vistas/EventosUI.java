@@ -22,7 +22,6 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
         initComponents();
         controlador = ParticionesDinamicas.getControlador();
         controlador.addObserver(this);
-        tablaEventos.setModel(new ParticionTableModel());
         slider.setMaximum(controlador.getInstanteFinal());
         slider.setMinimum(0);
         slider.setMajorTickSpacing(controlador.getInstanteFinal());
@@ -53,9 +52,9 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
         jLabel2 = new javax.swing.JLabel();
         textoEvento = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jspTabla = new javax.swing.JScrollPane();
         tablaEventos = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(550, 300));
         setMinimumSize(new java.awt.Dimension(550, 300));
@@ -126,23 +125,15 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
 
         jPanel4.add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        tablaEventos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tablaEventos.setMaximumSize(new java.awt.Dimension(60, 64));
-        tablaEventos.setPreferredSize(new java.awt.Dimension(64, 64));
-        jspTabla.setViewportView(tablaEventos);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Estado de las particiones");
+
+        jspTabla.setName("jspTabla");
+
+        tablaEventos.setModel(new vistas.ParticionTableModel());
+        tablaEventos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaEventos.getTableHeader().setReorderingAllowed(false);
+        jspTabla.setViewportView(tablaEventos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -151,8 +142,8 @@ public class EventosUI extends javax.swing.JPanel implements Observer {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jspTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+                    .addComponent(jspTabla))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(

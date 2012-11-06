@@ -69,8 +69,9 @@ public class SimulacionMemoriaUI extends javax.swing.JFrame implements Observer 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Estado Memoria");
+        setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(200, 400));
         setMinimumSize(new java.awt.Dimension(200, 400));
         setName("Memoria");

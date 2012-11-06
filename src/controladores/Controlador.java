@@ -77,12 +77,7 @@ public class Controlador extends Observable {
     }
 
     public Integer obtenerTiempoRetornoTanda() {
-        Iterator<Proceso> i = modelo.getProcesosFinalizados().iterator();
-        Integer suma = 0;
-        while(i.hasNext()) {
-            suma += i.next().getTiempoRetorno();
-        }
-        return suma;
+        return this.getInstanteFinal() - 1;
     }
 
     public LinkedList<Particion> obtenerPaticiones() {
@@ -147,7 +142,7 @@ public class Controlador extends Observable {
         return this.modelo.getProcesosFinalizados().size();
     }
 
-    public void cargarProcesosDelArchivo(File file) throws IOException {
+    public void cargarProcesosDelArchivo(File file) throws IOException, NumberFormatException {
         try (BufferedReader in = new BufferedReader(new FileReader(file))) {
             this.modelo.getProcesosEsperando().clear();
             while(in.ready()) {
@@ -167,6 +162,26 @@ public class Controlador extends Observable {
         this.evento = modelo.getEventos().get(instante);
         setChanged();
         notifyObservers();
+    }
+
+    public String obtenerMemoriaFisicaDisponible() {
+        return String.valueOf(modelo.getTamañoMemoriaFisica()) + " Kb";
+    }
+
+    public String obtenerEstrategiaSeleccionParticion() {
+        return "" + modelo.getEstrategiaSeleccionParticion();
+    }
+
+    public String obtenerTiempoSeleccionParticion() {
+        return String.valueOf(modelo.getTiempoSeleccionParticion()) + " seg";
+    }
+
+    public String obtenerTiempoCargaPromedio() {
+        return String.valueOf(modelo.getTiempoCargaPromedio()) + " seg";
+    }
+
+    public String obtenerTiempoLiberacionParticion() {
+        return String.valueOf(modelo.getTiempoLiberacionParticion()) + " seg";
     }
 
 }

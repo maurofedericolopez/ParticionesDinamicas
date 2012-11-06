@@ -20,6 +20,11 @@ public class IndicadoresUI extends javax.swing.JPanel {
         tiempoRetornoTanda.setText(String.valueOf(controlador.obtenerTiempoRetornoTanda()));
         tiempoMedioRetorno.setText(String.valueOf(controlador.obtenerTiempoMedioRetorno()));
         indiceFragmentacionExterna.setText(String.valueOf(controlador.obtenerIndiceFragmentacionExterna()));
+        memoriaFisicaDisponible.setText(memoriaFisicaDisponible.getText() + " " + controlador.obtenerMemoriaFisicaDisponible());
+        estrategiaSeleccionParticion.setText(estrategiaSeleccionParticion.getText() + " " + controlador.obtenerEstrategiaSeleccionParticion());
+        tiempoSeleccionParticion.setText(tiempoSeleccionParticion.getText() + " " + controlador.obtenerTiempoSeleccionParticion());
+        tiempoCargaPromedio.setText(tiempoCargaPromedio.getText() + " " + controlador.obtenerTiempoCargaPromedio());
+        tiempoLiberacionParticion.setText(tiempoLiberacionParticion.getText() + " " + controlador.obtenerTiempoLiberacionParticion());
     }
 
     /**
@@ -41,6 +46,11 @@ public class IndicadoresUI extends javax.swing.JPanel {
         tiempoMedioRetorno = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         indiceFragmentacionExterna = new javax.swing.JLabel();
+        memoriaFisicaDisponible = new javax.swing.JLabel();
+        estrategiaSeleccionParticion = new javax.swing.JLabel();
+        tiempoSeleccionParticion = new javax.swing.JLabel();
+        tiempoCargaPromedio = new javax.swing.JLabel();
+        tiempoLiberacionParticion = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(550, 210));
@@ -51,6 +61,7 @@ public class IndicadoresUI extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 300));
 
         tablaProcesos.setModel(new vistas.ProcesoFinalizadoTableModel());
+        tablaProcesos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jsp.setViewportView(tablaProcesos);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -58,23 +69,38 @@ public class IndicadoresUI extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Tiempo de retorno de la tanda");
 
-        tiempoRetornoTanda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tiempoRetornoTanda.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tiempoRetornoTanda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tiempoRetornoTanda.setText("jLabel3");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setText("Tiempo medio de retorno");
 
-        tiempoMedioRetorno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tiempoMedioRetorno.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tiempoMedioRetorno.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tiempoMedioRetorno.setText("jLabel5");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setText("Índice de fragmentación externa");
 
-        indiceFragmentacionExterna.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        indiceFragmentacionExterna.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         indiceFragmentacionExterna.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         indiceFragmentacionExterna.setText("jLabel7");
+
+        memoriaFisicaDisponible.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        memoriaFisicaDisponible.setText("Memoria física disponible:");
+
+        estrategiaSeleccionParticion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        estrategiaSeleccionParticion.setText("Estrategia de selección de partición:");
+
+        tiempoSeleccionParticion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        tiempoSeleccionParticion.setText("Tiempo de selección de partición:");
+
+        tiempoCargaPromedio.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        tiempoCargaPromedio.setText("Tiempo de carga promedio:");
+
+        tiempoLiberacionParticion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        tiempoLiberacionParticion.setText("Tiempo de liberación de partición:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -82,17 +108,26 @@ public class IndicadoresUI extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jsp, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jsp, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tiempoRetornoTanda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tiempoMedioRetorno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
-                    .addComponent(indiceFragmentacionExterna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tiempoSeleccionParticion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tiempoCargaPromedio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tiempoRetornoTanda, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                            .addComponent(tiempoMedioRetorno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(indiceFragmentacionExterna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(memoriaFisicaDisponible, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(estrategiaSeleccionParticion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tiempoLiberacionParticion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -101,19 +136,29 @@ public class IndicadoresUI extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                    .addComponent(jsp, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tiempoRetornoTanda)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tiempoMedioRetorno)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(indiceFragmentacionExterna))
-                    .addComponent(jsp, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(memoriaFisicaDisponible)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(estrategiaSeleccionParticion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tiempoSeleccionParticion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tiempoCargaPromedio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tiempoLiberacionParticion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(tiempoRetornoTanda))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(tiempoMedioRetorno))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(indiceFragmentacionExterna))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -125,6 +170,7 @@ public class IndicadoresUI extends javax.swing.JPanel {
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel estrategiaSeleccionParticion;
     private javax.swing.JLabel indiceFragmentacionExterna;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -133,8 +179,12 @@ public class IndicadoresUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane jsp;
+    private javax.swing.JLabel memoriaFisicaDisponible;
     private javax.swing.JTable tablaProcesos;
+    private javax.swing.JLabel tiempoCargaPromedio;
+    private javax.swing.JLabel tiempoLiberacionParticion;
     private javax.swing.JLabel tiempoMedioRetorno;
     private javax.swing.JLabel tiempoRetornoTanda;
+    private javax.swing.JLabel tiempoSeleccionParticion;
     // End of variables declaration//GEN-END:variables
 }

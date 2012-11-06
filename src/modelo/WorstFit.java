@@ -30,4 +30,9 @@ public class WorstFit extends Estrategia {
             return null;
     }
 
+    @Override
+    public String toString() {
+        return "Worst-Fit";
+    }
+
 }

@@ -26,7 +26,7 @@ public abstract class Estrategia {
         p.setProceso(proceso);
         p.setEstado(EstadoParticion.OCUPADA);
         proceso.setTiempoCarga(instante);
-        if(tamañoParticion > p.getTamaño()) {
+        if(tamañoParticion > proceso.getMemoriaRequerida()) {
             Integer direccionComienzo = p.getDireccionComienzo() + p.getTamaño();
             Integer nuevoTamañoParticion = tamañoParticion - proceso.getMemoriaRequerida();
             this.particiones.add(new Particion(direccionComienzo, nuevoTamañoParticion));

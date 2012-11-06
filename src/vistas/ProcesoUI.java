@@ -3,6 +3,7 @@ package vistas;
 import controladores.Controlador;
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -241,6 +242,8 @@ public class ProcesoUI extends javax.swing.JPanel {
         });
 
         tablaProcesos.setModel(new vistas.ProcesoEsperandoTableModel());
+        tablaProcesos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaProcesos.getTableHeader().setReorderingAllowed(false);
         jsp.setViewportView(tablaProcesos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -319,14 +322,14 @@ public class ProcesoUI extends javax.swing.JPanel {
             File file = selectorArchivo.getSelectedFile();
             try {
                 controlador.cargarProcesosDelArchivo(file);
-            }catch (IOException ex) {
+            }catch (IOException | NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null,
                     "Problemas para abrir el archivo.",
                     "Error Archivo",
                     JOptionPane.ERROR_MESSAGE);
+            }catch (NoSuchElementException nex) {
+                
             }
-        } else {
-            System.out.println("File access cancelled by user.");
         }
     }//GEN-LAST:event_botonAbrirArchivoProcesosActionPerformed
 

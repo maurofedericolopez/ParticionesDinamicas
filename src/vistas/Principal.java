@@ -36,7 +36,7 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Simulador");
+        setTitle("Simulador de Mauro Federico Lopez");
         setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(550, 600));
         setMinimumSize(new java.awt.Dimension(550, 600));
