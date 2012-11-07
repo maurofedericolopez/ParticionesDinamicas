@@ -9,7 +9,7 @@ import java.util.Observable;
  *
  * @author Mauro Federico Lopez
  */
-public class Simulador extends Observable {
+public class GestorMemoria extends Observable {
 
     private Integer tamañoMemoriaFisica;
     private Integer tiempoSeleccionParticion;
@@ -23,7 +23,7 @@ public class Simulador extends Observable {
     private HashMap<Integer,Evento> eventos;
     private Reloj reloj;
 
-    public Simulador() {
+    public GestorMemoria() {
         this.procesosEsperando = new LinkedList();
         this.procesosFinalizados = new LinkedList();
         this.eventos = new HashMap();

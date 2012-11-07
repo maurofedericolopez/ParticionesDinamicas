@@ -1,7 +1,7 @@
 package particionesdinamicas;
 
 import controladores.Controlador;
-import modelo.Simulador;
+import modelo.GestorMemoria;
 import vistas.Principal;
 import vistas.SimulacionMemoriaUI;
 
@@ -11,7 +11,7 @@ import vistas.SimulacionMemoriaUI;
  */
 public class ParticionesDinamicas {
 
-    private static Simulador modelo;
+    private static GestorMemoria modelo;
     private static Controlador controlador;
     private static Principal ventanaPrincipal;
     private static SimulacionMemoriaUI ventanaSimulacion;
@@ -19,14 +19,14 @@ public class ParticionesDinamicas {
     /**
      * @return the modelo
      */
-    public static Simulador getModelo() {
+    public static GestorMemoria getModelo() {
         return modelo;
     }
 
     /**
      * @param aModelo the modelo to set
      */
-    public static void setModelo(Simulador aModelo) {
+    public static void setModelo(GestorMemoria aModelo) {
         modelo = aModelo;
     }
 
@@ -48,7 +48,7 @@ public class ParticionesDinamicas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ParticionesDinamicas.setModelo(new Simulador());
+        ParticionesDinamicas.setModelo(new GestorMemoria());
         ParticionesDinamicas.setControlador(new Controlador());
         setVentanaPrincipal(new Principal());
         getVentanaPrincipal().setVisible(true);

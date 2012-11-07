@@ -15,7 +15,7 @@ import vistas.*;
  */
 public class Controlador extends Observable {
 
-    private Simulador modelo;
+    private GestorMemoria modelo;
     private Evento evento;
 
     public Controlador() {
@@ -130,7 +130,7 @@ public class Controlador extends Observable {
     }
 
     public void crearNuevaSimulacion() {
-        ParticionesDinamicas.setModelo(new Simulador());
+        ParticionesDinamicas.setModelo(new GestorMemoria());
         modelo = ParticionesDinamicas.getModelo();
     }
 
